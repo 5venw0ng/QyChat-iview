@@ -49,6 +49,7 @@
 <script type="es6">
   export default {
     name: 'MsgContent',
+    props: ['userid'],//这是前台传过来的userid
     data () {
       return {
         total: 0,
@@ -64,49 +65,13 @@
                   isVideo:false,
                   isImg:false,
                   isVoice:false
-         },
-         rulemymsg:{},
-        msgcontent: [
-          {
-            title: '编号',
-            key: 'id',
-            width:"5%"
           },
-          {
-            title: '消息编号',
-            key: 'msgid',
-            width:"15%",
-            render: (h, params) => {
-            　　return h('div', [
-            　　　　h('Tooltip', {
-            　　　　props: { placement: 'top' }
-            　　　　}, [
-            　　　　h('span', {
-            　　　　　　style: {
-            　　　　　　　　display: 'inline-block',
-            　　　　　　　　width: params.column._width*0.9+'px',
-            　　　　　　　　overflow: 'hidden',
-            　　　　　　　　textOverflow: 'ellipsis',
-            　　　　　　　　whiteSpace: 'nowrap',
-            　　　　　　},
-            　　　　　　}, params.row.msgid),
-            　　　　　　h('span', {
-            　　　　　　　　slot: 'content',
-            　　　　　　　　style: { whiteSpace: 'normal', wordBreak: 'break-all' }
-            　　　　　　},params.row.msgid)
-            　　　　])
-            　　])
-            }
-          },
-          {
-            title: '消息动作',
-            key: 'action',
-            width:"5%",
-          },
+          rulemymsg:{},
+          msgcontent: [
+
           {
             title: '发送者ID',
-            key: 'fromView',
-            width:"15%",
+            key: 'from',
             render: (h, params) => {
             　　return h('div', [
             　　　　h('Tooltip', {
@@ -120,19 +85,23 @@
             　　　　　　　　textOverflow: 'ellipsis',
             　　　　　　　　whiteSpace: 'nowrap',
             　　　　　　},
-            　　　　　　}, params.row.fromView),
+            　　　　　　}, params.row.from),
             　　　　　　h('span', {
             　　　　　　　　slot: 'content',
             　　　　　　　　style: { whiteSpace: 'normal', wordBreak: 'break-all' }
-            　　　　　　},params.row.fromView)
+            　　　　　　},params.row.from)
             　　　　])
             　　])
             }
+          },
+          {
+            title:'发送者',
+            key:'fromView'
           },
           {
             title: '接收者ID',
-            key: 'tolistView',
-            width:"27%",
+            key: 'tolist',
+            //width:"27%",
             render: (h, params) => {
             　　return h('div', [
             　　　　h('Tooltip', {
@@ -146,19 +115,23 @@
             　　　　　　　　textOverflow: 'ellipsis',
             　　　　　　　　whiteSpace: 'nowrap',
             　　　　　　},
-            　　　　　　}, params.row.tolistView),
+            　　　　　　}, params.row.tolist),
             　　　　　　h('span', {
             　　　　　　　　slot: 'content',
             　　　　　　　　style: { whiteSpace: 'normal', wordBreak: 'break-all' }
-            　　　　　　},params.row.tolistView)
+            　　　　　　},params.row.tolist)
             　　　　])
             　　])
             }
+          },
+          {
+            title:'接收者',
+            key:'tolistView'
           },
           {
             title: '群聊消息群ID',
             key: 'roomidView',
-            width:"13%",
+            //width:"13%",
             render: (h, params) => {
             　　return h('div', [
             　　　　h('Tooltip', {
@@ -182,22 +155,18 @@
             }
           },
           {
-            title: '发送时间',
+            title: '最后发送时间',
             key: 'msgtime',
-            width:"8%",
+            //width:"8%",
             render: function (h, params) {
                            return h('div', new
                              Date(Number(params.row.msgtime)).toLocaleString().replace(/:\d{1,2}$/, ' '));
               }
           },
           {
-            title: '消息类型',
-            key: 'msgtype'
-          },
-          {
             title: '操作',
             key: 'action',
-            width: 150,
+            //width: 150,
             align: 'center',
             render: (h, params) => {
               return h('div', [
@@ -266,10 +235,12 @@
 
       request (pageNum,pageSize){
         var that=this
-        this.$http.post(that.GLOBAL.serverPath + '/msg/findAll',
+        console.log(this.userid)
+        this.$http.post(that.GLOBAL.serverPath + '/msg/findAllByUserid',
           {
             pageNum:pageNum,
-            pageSize:pageSize
+            pageSize:pageSize,
+            userid:this.userid
           },
           {
             emulateJSON: true
@@ -282,10 +253,13 @@
             obj.id = e.id
             obj.msgid = e.msgid
             obj.action = e.action
+            obj.from = e.from
             obj.fromView = e.fromView
+            obj.tolist = e.tolist
             obj.tolistView = e.tolistView
             obj.roomidView = e.roomidView
             obj.msgtime = e.msgtime
+            /**
             obj.msgtype = e.msgtype
             if(e.msgtype=="text")
             {
@@ -303,6 +277,7 @@
             {
                obj.content = e.file;
             }
+            **/
             that.tableData.push(obj)
           })
         })

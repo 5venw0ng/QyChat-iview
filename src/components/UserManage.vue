@@ -40,10 +40,11 @@
                   },
                   on: {
                     click: () => {
-                      this.remove(params.index)
+                      
+                      this.showContext(params.row.id)
                     }
                   }
-                }, '删除')
+                }, '查看记录')
               ]);
             }
           }
@@ -53,17 +54,19 @@
     },
     mounted(){
       this.request(1);
+
     },
     methods: {
       handleSubmit(account) {
         this.request(1)
       },
-      remove (index) {
-        this.tableData.splice(index, 1);
+      showContext (userid) {
+        this.$parent.$parent.$parent.lookRecord(userid)
       },
       request (currentPage){
         var that=this
-        this.$http.post(that.GLOBAL.serverPath + '/login/getAllowUsers',
+        //this.$http.post(that.GLOBAL.serverPath + '/login/getAllowUsers',
+        this.$http.post(that.GLOBAL.serverPath + '/login/queryAllUsers',
           {
           },
           {
@@ -73,7 +76,7 @@
           that.total=res.body.length
           res.body.res.forEach((e) => {
             let obj={}
-            obj.id = e.id
+            obj.id = e.userid
             obj.name = e.username
             that.tableData.push(obj)
           })

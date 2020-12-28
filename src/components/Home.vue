@@ -4,7 +4,7 @@
       <Col span="5" class="layout-menu-left">
       <Menu active-name="1-1" theme="dark" width="auto" :open-names="['1']">
         <div class="layout-logo-left">
-          <h2 style="color:white;">企业微信会话管理</h2>
+          企业微信会话管理
         </div>
         <Submenu name="1">
           <template slot="title">
@@ -28,7 +28,7 @@
         <div class="layout-content-main">
           <template id="userManage"></template>
           <template id="msgContent"></template>
-          <component :is="currentView"></component>
+          <component :is="currentView" :userid="userid"></component>
         </div>
       </div>
       <div class="layout-copy">
@@ -50,7 +50,8 @@
         one_nav: '主页',
         two_nav: '会话存档',
         three_nav: '用户列表',
-        currentView: 'userManage'
+        currentView: 'userManage',
+        userid: 'userid'
       }
     },
     mounted() {
@@ -63,11 +64,12 @@
         this.three_nav = '用户列表'
         this.currentView = 'userManage'
       },
-      lookRecord() {
+      lookRecord(userid) {
         this.one_nav = '主页'
         this.two_nav = '会话存档'
         this.three_nav = '消息记录'
         this.currentView = 'msgContent'
+        this.userid = userid
       }
     },
     components: {
