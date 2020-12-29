@@ -1,22 +1,21 @@
 <style>
-  .pageclass
+    .pageclass
   {
     margin: 15px;
     float: right;
   }
 </style>
 <template>
-  <div>
-    <Table border :columns="userList"  :data="tableData"></Table>
-    <Page :total="total" :page-size="10" @on-change="changePage"  class="pageclass"
-      size="small" show-elevator show-sizer></Page>
-  </div>
+    <div>
+        <Table border :columns="userList" :data="tableData"></Table>
+        <Page :total="total" :page-size="10" @on-change="changePage" class="pageclass" size="small" show-elevator show-sizer></Page>
+    </div>
 </template>
 <script type="es6">
-  export default {
+    export default {
     name: 'UserManage',
     data () {
-      return {
+    return {
         total: 0,
         userList: [
           {

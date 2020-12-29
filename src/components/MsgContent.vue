@@ -257,7 +257,7 @@
             obj.fromView = e.fromView
             obj.tolist = e.tolist
             obj.tolistView = e.tolistView
-            obj.roomidView = e.roomidView
+            obj.roomidView = e.roomid
             obj.msgtime = e.msgtime
             /**
             obj.msgtype = e.msgtype
